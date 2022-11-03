@@ -36,7 +36,7 @@ class _OnboardinPageState extends State<OnboardinPage> {
               padding: const EdgeInsets.only(left: 20).r,
               child: InkWell(
                 onTap: () {
-                  Navigator.pushNamed(context, RoutName.welcome);
+                  saveLogin(context);
                 },
                 child: Text(
                   'Skip',

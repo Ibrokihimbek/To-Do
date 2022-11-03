@@ -49,8 +49,18 @@ class LocalDatabase {
   static Future<TodoModel> insertToDatabase(TodoModel newTodo) async {
     var database = await getInstance.getDb();
     int id = await database.insert(tableName, newTodo.toJson());
-    print("HAMMASI YAXSHI");
     return newTodo.copyWith(id: id);
+  }
+
+  static Future<TodoModel> updateTaskById(TodoModel updatedTask) async {
+    var database = await getInstance.getDb();
+    int id = await database.update(
+      tableName,
+      updatedTask.toJson(),
+      where: 'id = ?',
+      whereArgs: [updatedTask.id],
+    );
+    return updatedTask.copyWith(id: id);
   }
 
   static Future<List<TodoModel>> getList() async {
@@ -59,11 +69,36 @@ class LocalDatabase {
       TodoFields.id,
       TodoFields.title,
       TodoFields.description,
+      TodoFields.date
     ]);
 
     var list = listOfTodos.map((e) => TodoModel.fromJson(e)).toList();
 
     return list;
+  }
+
+  static Future<List<TodoModel>> getTaskByTitle({String title = ''}) async {
+    var database = await getInstance.getDb();
+
+    if (title.isNotEmpty) {
+      var listOfTodos = await database.query(
+        tableName,
+        where: 'title LIKE ?',
+        whereArgs: ['%$title%'],
+      );
+      var list = listOfTodos.map((e) => TodoModel.fromJson(e)).toList();
+      return list;
+    } else {
+      var listOfTodos = await database.query(tableName, columns: [
+        TodoFields.id,
+        TodoFields.title,
+        TodoFields.description,
+        TodoFields.date
+      ]);
+
+      var list = listOfTodos.map((e) => TodoModel.fromJson(e)).toList();
+      return list;
+    }
   }
 
   static Future<int> deleteTaskById(int id) async {

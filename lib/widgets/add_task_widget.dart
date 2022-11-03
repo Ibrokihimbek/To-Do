@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:note/widgets/choose_cotegory_widget.dart';
+import 'package:note/widgets/flag_widget.dart';
 import 'package:note/widgets/texfield_widget.dart';
 import 'package:note/widgets/text_style_widget.dart';
-import 'package:numberpicker/numberpicker.dart';
 
 import '../database/local_database.dart';
 import '../models/todo_model.dart';
 import '../utils/colors.dart';
 import '../utils/images.dart';
+import '../utils/time_utils.dart';
 
 class AddTaskWidget extends StatefulWidget {
   VoidCallback onNewTask;
@@ -25,6 +27,8 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
   final formKey = GlobalKey<FormState>();
   String newTitle = "";
   String newDescription = "";
+  DateTime? taskDay;
+  TimeOfDay? taskTime;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +37,7 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
           EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
       child: Container(
         padding: const EdgeInsets.all(24).r,
-        height: 312.h,
+        height: 320.h,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(16.r),
@@ -107,6 +111,12 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
                     ),
                     border: InputBorder.none),
               ),
+              Text(
+                taskDay.toString() == "null"
+                    ? ""
+                    : TimeUtils.formatToMyTime(taskDay!),
+                style: const TextStyle(color: Colors.white),
+              ),
               SizedBox(height: 35.h),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -114,16 +124,31 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
                   Row(
                     children: [
                       InkWell(
-                        onTap: () {},
+                        onTap: () async {
+                          taskDay = await showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime(2020),
+                            lastDate: DateTime(2300),
+                          );
+                          taskTime = await showTimePicker(
+                            context: context,
+                            initialTime: TimeOfDay.now(),
+                          );
+                          taskDay = DateTime(
+                            taskDay?.year ?? 0000,
+                            taskDay?.month ?? 00,
+                            taskDay?.day ?? 00,
+                            taskTime?.hour ?? 00,
+                            taskTime?.minute ?? 00,
+                          );
+                        },
                         child: SvgPicture.asset(MyImages.icon_timer),
                       ),
                       SizedBox(width: 22.w),
-                      InkWell(
-                        onTap: () {},
-                        child: SvgPicture.asset(MyImages.icon_tag),
-                      ),
+                      ButtonMark(),
                       SizedBox(width: 22.w),
-                      SvgPicture.asset(MyImages.icon_flag),
+                      ButtonFlag(),
                     ],
                   ),
                   InkWell(
@@ -133,14 +158,12 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
                         var newTodo = TodoModel(
                           title: newTitle,
                           description: newDescription,
-                          date: "date",
+                          date: taskDay.toString(),
                           priority: "priority",
                           isCompleted: 0,
                         );
                         LocalDatabase.insertToDatabase(newTodo);
-
                         widget.onNewTask();
-
                         Navigator.pop(context);
                       }
                     },

@@ -17,6 +17,15 @@ class MyImages {
   static const icon_flag = 'assets/icons/icon_flag.svg';
   static const icon_send = 'assets/icons/icon_send.svg';
   static const icon_checklist = 'assets/icons/icon_checklist.svg';
+  static const icon_search = 'assets/icons/icon_search.svg';
+  static const icon_work = 'assets/icons/icon_work.svg';
+  static const icon_health = 'assets/icons/icon_health.svg';
+  static const icon_house = 'assets/icons/icon_house.svg';
+  static const icon_movie = 'assets/icons/icon_movie.svg';
+  static const icon_sport = 'assets/icons/icon_sport.svg';
+  static const icon_universty = 'assets/icons/icon_universty.svg';
+
+
 
   // PNG
 

@@ -6,7 +6,6 @@ import 'package:note/utils/colors.dart';
 import 'package:note/utils/images.dart';
 import 'package:note/widgets/add_task_widget.dart';
 import 'package:note/widgets/texfield_widget.dart';
-import 'package:numberpicker/numberpicker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/todo_model.dart';
@@ -61,7 +60,7 @@ class _MainPageState extends State<MainPage> {
               backgroundImage: AssetImage(MyImages.image_person),
             ),
           ),
-          SizedBox(width: 12),
+          SizedBox(width: 12.w),
         ],
       ),
       drawer: Drawer(

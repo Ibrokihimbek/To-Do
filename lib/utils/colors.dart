@@ -10,4 +10,10 @@ class MyColors {
   static const C_979797 = Color(0xff979797);
   static const C_1D1D1D = Color(0xff1D1D1D);
   static const C_363636 = Color(0xff363636);
+  static const C_FF9680 = Color(0xffFF9680);
+  static const C_80FFA3 = Color(0xff80FFA3);
+  static const C_80D1FF = Color(0xff80D1FF);
+  static const C_80FFFF = Color(0xff80FFFF);
+  static const C_FFCC80 = Color(0xffFFCC80);
+
 }
