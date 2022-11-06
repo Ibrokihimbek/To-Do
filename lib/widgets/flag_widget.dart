@@ -1,163 +1,129 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:note/utils/colors.dart';
 import 'package:note/utils/images.dart';
+import 'package:note/widgets/button_widget.dart';
 import 'package:note/widgets/text_style_widget.dart';
 
-int nimadir = -1;
-bool isOn = false;
-String propirty = "";
+import '../models/cotegory_model.dart';
 
-class ButtonFlag extends StatelessWidget {
-  const ButtonFlag({
-    Key? key,
-  }) : super(key: key);
+class ButtonFlag extends StatefulWidget {
+  ValueChanged<int> onSelected;
+  Color color;
+  ButtonFlag({super.key, required this.onSelected, required this.color});
 
   @override
+  State<ButtonFlag> createState() => _ButtonFlagState();
+}
+
+bool isDark = false;
+
+class _ButtonFlagState extends State<ButtonFlag> {
+  int value = 0;
+  @override
   Widget build(BuildContext context) {
+    isDark = Theme.of(context).brightness == Brightness.dark;
+
     return InkWell(
-        onTap: () {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return StatefulBuilder(
-                builder: (context, state) {
-                  return SizedBox(
-                    width: 350,
-                    height: 350,
-                    child: AlertDialog(
-                      backgroundColor: MyColors.C_363636,
-                      title: Column(
-                        children: [
-                          Text(
-                            "Task priority",
-                            style: FontLatoW700().copyWith(fontSize: 16.sp),
-                          ),
-                          const SizedBox(
-                            height: 6,
-                          ),
-                          const Divider(
-                            thickness: 2,
-                            color: MyColors.C_AFAFAF,
-                          )
-                        ],
+      onTap: () {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return StatefulBuilder(
+              builder: (context, state) {
+                return AlertDialog(
+                  backgroundColor:
+                      isDark ? MyColors.C_363636 : Colors.grey.shade400,
+                  title: Column(
+                    children: [
+                      Text(
+                        "Task Priority".tr(),
+                        style: FontLatoW700().copyWith(
+                          fontSize: 16.sp,
+                          color: isDark ? Colors.white : Colors.black,
+                        ),
                       ),
-                      content: Stack(
-                        children: [
-                          SizedBox(
-                            width: 360,
-                            height: 270,
-                            child: GridView.builder(
-                                itemCount: 10,
-                                shrinkWrap: true,
-                                scrollDirection: Axis.vertical,
-                                gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 4,
-                                ),
-                                itemBuilder: (BuildContext contex, int index) {
-                                  return InkWell(
-                                    onTap: () {
-                                      state(() {
-                                        nimadir = index;
-                                        propirty = (index + 1).toString();
-                                        isOn = !isOn;
-                                      });
-                                    },
-                                    child: Container(
-                                      margin: const EdgeInsets.all(4).r,
-                                      width: 64,
-                                      height: 64,
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(4),
-                                          color: nimadir == index
-                                              ? const Color(0xff8875ff)
-                                              : const Color(0xff272727)),
-                                      child: Column(
-                                        children: [
-                                          Padding(
-                                              padding:
-                                                  const EdgeInsets.only(top: 6),
-                                              child: SvgPicture.asset(
-                                                  MyImages.icon_flag)),
-                                          const SizedBox(
-                                            height: 6,
-                                          ),
-                                          Text(
-                                            "${index + 1}",
-                                            style: const TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.w400),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  );
-                                }),
-                          ),
-                          Positioned(
-                            bottom: 4,
-                            right: 10,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                InkWell(
-                                  child: Container(
-                                    width: 123,
-                                    height: 48,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(4),
-                                        color: Colors.transparent),
-                                    child: const Center(
-                                        child: TextButton(
-                                            onPressed: null,
-                                            child: Text(
-                                              "Cancel",
-                                              style: TextStyle(
-                                                  color: Color(0xff8577ff),
-                                                  fontSize: 16),
-                                            ))),
-                                  ),
-                                  onTap: () {
-                                    Navigator.pop(context);
-                                  },
-                                ),
-                                const SizedBox(
-                                  width: 30,
-                                ),
-                                InkWell(
-                                  child: Container(
-                                    width: 123,
-                                    height: 48,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(4),
-                                        color: MyColors.C_8875FF),
-                                    child: const Center(
-                                      child: Text(
-                                        "Save",
-                                        style: TextStyle(
-                                            color: Colors.white, fontSize: 16),
-                                      ),
-                                    ),
-                                  ),
-                                  onTap: () {
-                                    Navigator.pop(context);
-                                  },
-                                ),
-                              ],
+                      const SizedBox(
+                        height: 6,
+                      ),
+                      Divider(
+                        thickness: 2,
+                        color: isDark ? MyColors.C_AFAFAF : Colors.black54,
+                      ),
+                      SizedBox(height: 14.h),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.23.h,
+                        width: MediaQuery.of(context).size.height * 0.7.w,
+                        child: GridView.builder(
+                            itemCount: 10,
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                              mainAxisSpacing: 4,
+                              crossAxisSpacing: 4,
+                              crossAxisCount: 4,
                             ),
-                          ),
-                        ],
+                            itemBuilder: (context, index) {
+                              return categoryItem(index);
+                            }),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            );
+          },
+        );
+      },
+      child: SvgPicture.asset(
+        MyImages.icon_flag,
+        color: widget.color,
+      ),
+    );
+  }
+
+  Widget categoryItem(int index) {
+    return InkWell(
+      onTap: () {
+        widget.onSelected(index);
+
+        Navigator.pop(context);
+      },
+      child: Column(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(4.r),
+              color: isDark ? const Color(0xff272727) : Colors.grey[600],
+            ),
+            height: 68,
+            width: 68,
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    SvgPicture.asset(
+                      MyImages.icon_flag,
+                      color: isDark ? MyColors.C_FFFFFF : Colors.black,
+                    ),
+                    SizedBox(height: 4.h),
+                    Text(
+                      "${index + 1}",
+                      style: FontLatoW400(
+                        color: isDark ? MyColors.C_FFFFFF : Colors.black,
                       ),
                     ),
-                  );
-                },
-              );
-            },
-          );
-        },
-        child: SvgPicture.asset(MyImages.icon_flag));
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

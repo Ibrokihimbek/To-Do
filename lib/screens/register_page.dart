@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -8,6 +9,7 @@ import 'package:note/utils/app_routes.dart';
 import 'package:note/utils/colors.dart';
 import 'package:note/widgets/button_widget.dart';
 
+import '../local_data/storage_repository.dart';
 import '../utils/images.dart';
 import '../widgets/divider_widget.dart';
 import '../widgets/texfield_widget.dart';
@@ -20,12 +22,17 @@ class RegisterPage extends StatefulWidget {
   State<RegisterPage> createState() => _RegisterPageState();
 }
 
+bool isDark = false;
+
 class _RegisterPageState extends State<RegisterPage> {
   final _formKey = GlobalKey<FormState>();
+  final myControllerRegister = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
-      backgroundColor: MyColors.C_121212,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         child: Form(
@@ -37,6 +44,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   ButtonBack(
+                    color: isDark ? MyColors.C_FFFFFF : MyColors.C_121212,
                     context: context,
                     onTap: () {
                       Navigator.pushReplacementNamed(context, RoutName.logIn);
@@ -45,42 +53,84 @@ class _RegisterPageState extends State<RegisterPage> {
                   SizedBox(height: 16.h),
                   Text(
                     textAlign: TextAlign.center,
-                    'Register',
-                    style: FontLatoW700(),
+                    'Register'.tr(),
+                    style: FontLatoW700().copyWith(
+                      color: isDark
+                          ? MyColors.C_FFFFFF.withOpacity(0.87)
+                          : MyColors.C_121212.withOpacity(0.87),
+                    ),
                   ),
-                  SizedBox(height: 23.h),
+                  SizedBox(height: 16.h),
                   Text(
-                    'Username',
+                    'Username'.tr(),
                     style: FontLatoW400(
-                      color: MyColors.C_FFFFFF.withOpacity(0.87),
+                      color: isDark
+                          ? MyColors.C_FFFFFF.withOpacity(0.87)
+                          : MyColors.C_121212.withOpacity(0.87),
                     ),
                   ),
                   SizedBox(height: 8.h),
-                  TextFieldName(hinttext: 'Enter your Username'),
+                  TextFieldName(
+                      styleColor: isDark ? MyColors.C_FFFFFF : Colors.black,
+                      filColor: isDark
+                          ? MyColors.C_1D1D1D
+                          : const Color.fromARGB(255, 191, 191, 191),
+                      focuseColor: isDark ? MyColors.C_979797 : Colors.black54,
+                      enabledColor: isDark ? MyColors.C_979797 : Colors.black54,
+                      hintColor: isDark ? MyColors.C_AFAFAF : Colors.black54,
+                      hinttext: 'Enter your Username'.tr(),
+                      textControler: myControllerRegister),
                   SizedBox(height: 25.h),
                   Text(
-                    'Password',
+                    'Password'.tr(),
                     style: FontLatoW400(
-                      color: MyColors.C_FFFFFF.withOpacity(0.87),
+                      color: isDark
+                          ? MyColors.C_FFFFFF.withOpacity(0.87)
+                          : MyColors.C_121212.withOpacity(0.87),
                     ),
                   ),
                   SizedBox(height: 8.h),
-                  TextFieldPassword(hinttext: '• • • • • • • • • • • •'),
+                  TextFieldPassword(
+                      styleColor: isDark ? MyColors.C_FFFFFF : Colors.black,
+                      filColor: isDark
+                          ? MyColors.C_1D1D1D
+                          : const Color.fromARGB(255, 191, 191, 191),
+                      focuseColor: isDark ? MyColors.C_979797 : Colors.black54,
+                      enabledColor: isDark ? MyColors.C_979797 : Colors.black54,
+                      hintColor: isDark
+                          ? MyColors.C_535353
+                          : Color.fromARGB(137, 143, 143, 143),
+                      hinttext: '• • • • • • • • • • • •'),
                   SizedBox(height: 25.h),
                   Text(
-                    'Confirm Password',
+                    'Confirm Password'.tr(),
                     style: FontLatoW400(
-                      color: MyColors.C_FFFFFF.withOpacity(0.87),
+                      color: isDark
+                          ? MyColors.C_FFFFFF.withOpacity(0.87)
+                          : MyColors.C_121212.withOpacity(0.87),
                     ),
                   ),
                   SizedBox(height: 8.h),
-                  TextFieldPassword(hinttext: '• • • • • • • • • • • •'),
+                  TextFieldPassword(
+                      styleColor: isDark ? MyColors.C_FFFFFF : Colors.black,
+                      filColor: isDark
+                          ? MyColors.C_1D1D1D
+                          : const Color.fromARGB(255, 191, 191, 191),
+                      focuseColor: isDark ? MyColors.C_979797 : Colors.black54,
+                      enabledColor: isDark ? MyColors.C_979797 : Colors.black54,
+                      hintColor: isDark
+                          ? MyColors.C_535353
+                          : Color.fromARGB(137, 143, 143, 143),
+                      hinttext: '• • • • • • • • • • • •'),
                   SizedBox(height: 40.h),
                   ButtonConiformation(
-                    buttonName: 'Register',
+                    color: isDark ? MyColors.C_FFFFFF : Colors.black,
+                    buttonName: 'Register'.tr(),
                     onTap: () {
                       if (_formKey.currentState!.validate()) {
                         FocusManager.instance.primaryFocus?.unfocus();
+                        StorageRepository.setString(
+                            'name', myControllerRegister.text);
                         showModalBottomSheet(
                           backgroundColor: Colors.transparent,
                           context: context,
@@ -93,18 +143,26 @@ class _RegisterPageState extends State<RegisterPage> {
                                   topLeft: Radius.circular(16.r),
                                   topRight: Radius.circular(16.r),
                                 ),
-                                color: MyColors.C_363636,
+                                color: isDark
+                                    ? MyColors.C_363636
+                                    : Colors.grey.shade400,
                               ),
                               child: Column(
                                 children: [
-                                  SvgPicture.asset(MyImages.icon_fingerprint),
+                                  SvgPicture.asset(
+                                    MyImages.icon_fingerprint,
+                                    color: isDark
+                                        ? MyColors.C_FFFFFF.withOpacity(0.87)
+                                        : MyColors.C_121212.withOpacity(0.87),
+                                  ),
                                   SizedBox(height: 12.h),
                                   Text(
-                                    "Please hold your finger at "
-                                    "the fingerprint scanner to verify your identity",
+                                    "Please hold your finger at the fingerprint scanner to verify your identity".tr(),
                                     textAlign: TextAlign.center,
                                     style: FontLatoW400(
-                                      color: Colors.white.withOpacity(0.87),
+                                      color: isDark
+                                          ? MyColors.C_FFFFFF.withOpacity(0.87)
+                                          : MyColors.C_121212.withOpacity(0.87),
                                     ).copyWith(fontSize: 20.sp),
                                   ),
                                   SizedBox(height: 48.h),
@@ -137,23 +195,31 @@ class _RegisterPageState extends State<RegisterPage> {
                   DividerOrDivider(),
                   SizedBox(height: 24.h),
                   ButtonContinueAccount(
-                    buttonText: 'Login with Google',
+                    textColor: isDark
+                        ? MyColors.C_FFFFFF.withOpacity(0.87)
+                        : MyColors.C_121212.withOpacity(0.87),
+                    buttonText: 'Login with Google'.tr(),
                     icon: MyImages.icon_google,
                     onTap: () {},
                   ),
                   SizedBox(height: 17.h),
                   ButtonContinueAccount(
-                    buttonText: 'Login with Appe',
+                    textColor: isDark
+                        ? MyColors.C_FFFFFF.withOpacity(0.87)
+                        : MyColors.C_121212.withOpacity(0.87),
+                    buttonText: 'Login with Apple'.tr(),
                     icon: MyImages.icon_apple,
                     onTap: () {},
                   ),
-                  SizedBox(height: 46.h),
+                  SizedBox(height: 36.h),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'Already have an account?',
-                        style: FontLatoW400(color: MyColors.C_979797)
+                        'Already have an account?'.tr(),
+                        style: FontLatoW400(
+                                color:
+                                    isDark ? MyColors.C_979797 : Colors.black54)
                             .copyWith(fontSize: 12.sp),
                       ),
                       SizedBox(width: 4.w),
@@ -163,9 +229,11 @@ class _RegisterPageState extends State<RegisterPage> {
                               context, RoutName.logIn);
                         },
                         child: Text(
-                          'Login',
+                          'Login'.tr(),
                           style: FontLatoW400(
-                            color: MyColors.C_FFFFFF.withOpacity(0.87),
+                            color: isDark
+                                ? MyColors.C_FFFFFF.withOpacity(0.87)
+                                : MyColors.C_121212.withOpacity(0.87),
                           ).copyWith(fontSize: 12.sp),
                         ),
                       ),

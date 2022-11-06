@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -20,13 +21,15 @@ class OnboardinPage extends StatefulWidget {
 
 int currentIndex = 0;
 PageController pageController = PageController();
-String NextButton = 'Next';
+String NextButton = 'Next'.tr();
+bool isDark = false;
 
 class _OnboardinPageState extends State<OnboardinPage> {
   @override
   Widget build(BuildContext context) {
+    isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: MyColors.C_121212,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -39,9 +42,11 @@ class _OnboardinPageState extends State<OnboardinPage> {
                   saveLogin(context);
                 },
                 child: Text(
-                  'Skip',
+                  'Skip'.tr(),
                   style: FontLatoW400(
-                    color: MyColors.C_FFFFFF.withOpacity(0.44),
+                    color: isDark
+                        ? MyColors.C_FFFFFF.withOpacity(0.44)
+                        : Colors.black.withOpacity(0.44),
                   ),
                 ),
               ),
@@ -53,7 +58,11 @@ class _OnboardinPageState extends State<OnboardinPage> {
                   left: 140.sp,
                   child: Center(
                     child: Container(
-                      child: PostIndicatorWidget(currentIndex: currentIndex),
+                      child: PostIndicatorWidget(
+                          color: isDark
+                              ? MyColors.C_FFFFFF.withOpacity(0.87)
+                              : Colors.black.withOpacity(0.87),
+                          currentIndex: currentIndex),
                     ),
                   ),
                 ),
@@ -65,9 +74,9 @@ class _OnboardinPageState extends State<OnboardinPage> {
                       setState(() {
                         currentIndex = index;
                         if (currentIndex == 2) {
-                          NextButton = 'Get started';
+                          NextButton = 'Get started'.tr();
                         } else {
-                          NextButton = 'Next';
+                          NextButton = 'Next'.tr();
                         }
                       });
                     },
@@ -98,16 +107,18 @@ class _OnboardinPageState extends State<OnboardinPage> {
                       );
                     },
                     child: Text(
-                      'Back',
+                      'Back'.tr(),
                       style: FontLatoW400(
-                        color: MyColors.C_FFFFFF.withOpacity(0.44),
+                        color: isDark
+                            ? MyColors.C_FFFFFF.withOpacity(0.44)
+                            : Colors.black.withOpacity(0.44),
                       ),
                     ),
                   ),
                   InkWell(
                     onTap: () {
                       if (currentIndex == 1) {
-                        NextButton = 'Get started';
+                        NextButton = 'Get started'.tr();
                       }
                       setState(() {
                         if (currentIndex == 2) {
@@ -120,7 +131,7 @@ class _OnboardinPageState extends State<OnboardinPage> {
                       });
                     },
                     child: Container(
-                      width: NextButton == 'Next' ? 90.w : 150.w,
+                      width: NextButton == 'Next'.tr() ? 100.w : 150.w,
                       height: 48.h,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(4.r),
@@ -128,7 +139,8 @@ class _OnboardinPageState extends State<OnboardinPage> {
                       child: Center(
                         child: Text(
                           NextButton,
-                          style: FontLatoW400(color: MyColors.C_FFFFFF),
+                          style: FontLatoW400(
+                              color: isDark ? MyColors.C_FFFFFF : Colors.black),
                         ),
                       ),
                     ),
@@ -154,10 +166,18 @@ class _OnboardinPageState extends State<OnboardinPage> {
         SizedBox(
           width: double.infinity,
           child: Center(
-            child: Text(onboard.title, style: FontLatoW700()),
+            child: Text(
+              textAlign: TextAlign.center,
+              onboard.title.tr(),
+              style: FontLatoW700().copyWith(
+                color: isDark
+                    ? MyColors.C_FFFFFF.withOpacity(0.87)
+                    : Colors.black.withOpacity(0.87),
+              ),
+            ),
           ),
         ),
-        SizedBox(height: 50.h),
+        SizedBox(height: 40.h),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 40),
           child: SizedBox(
@@ -165,9 +185,11 @@ class _OnboardinPageState extends State<OnboardinPage> {
             child: Center(
               child: Text(
                 textAlign: TextAlign.center,
-                onboard.subTitle,
+                onboard.subTitle.tr(),
                 style: FontLatoW400(
-                  color: MyColors.C_FFFFFF.withOpacity(0.87),
+                  color: isDark
+                      ? MyColors.C_FFFFFF.withOpacity(0.87)
+                      : Colors.black.withOpacity(0.87),
                 ),
               ),
             ),

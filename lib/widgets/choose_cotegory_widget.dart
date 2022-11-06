@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -7,11 +9,23 @@ import 'package:note/utils/images.dart';
 import 'package:note/widgets/button_widget.dart';
 import 'package:note/widgets/text_style_widget.dart';
 
-class ButtonMark extends StatelessWidget {
-  const ButtonMark({super.key});
+import '../models/cotegory_model.dart';
+
+class ButtonMark extends StatefulWidget {
+  ValueChanged<int> onSelected;
+  Color color;
+  ButtonMark({super.key, required this.onSelected, required this.color});
 
   @override
+  State<ButtonMark> createState() => _ButtonMarkState();
+}
+
+bool isDark = false;
+
+class _ButtonMarkState extends State<ButtonMark> {
+  @override
   Widget build(BuildContext context) {
+    isDark = Theme.of(context).brightness == Brightness.dark;
     return InkWell(
       onTap: () {
         showDialog(
@@ -20,59 +34,41 @@ class ButtonMark extends StatelessWidget {
             return StatefulBuilder(
               builder: (context, state) {
                 return AlertDialog(
-                  backgroundColor: MyColors.C_363636,
+                  backgroundColor:
+                      isDark ? MyColors.C_363636 : Colors.grey.shade400,
                   title: Column(
                     children: [
                       Text(
-                        "Choose Category",
-                        style: FontLatoW700().copyWith(fontSize: 16.sp),
+                        "Choose Category".tr(),
+                        style: FontLatoW700().copyWith(
+                          fontSize: 16.sp,
+                          color: isDark ? Colors.white : Colors.black,
+                        ),
                       ),
                       const SizedBox(
                         height: 6,
                       ),
-                      const Divider(
+                      Divider(
                         thickness: 2,
-                        color: MyColors.C_AFAFAF,
+                        color: isDark ? MyColors.C_AFAFAF : Colors.black54,
                       ),
-                      Row(
-                        children: [
-                          ctegoryWidget(
-                              iconName: MyImages.icon_work,
-                              color: MyColors.C_FF9680,
-                              cotegory: 'Work'),
-                          SizedBox(width: 32.w),
-                          ctegoryWidget(
-                              iconName: MyImages.icon_sport,
-                              color: MyColors.C_80FFFF,
-                              cotegory: 'Sport'),
-                          SizedBox(width: 32.w),
-                          ctegoryWidget(
-                              iconName: MyImages.icon_universty,
-                              color: MyColors.C_8875FF,
-                              cotegory: 'University'),
-                        ],
+                      SizedBox(height: 14.h),
+                      Container(
+                        height: MediaQuery.of(context).size.height * 0.3.h,
+                        width: MediaQuery.of(context).size.height * 0.7.w,
+                        child: GridView.builder(
+                            itemCount: CotegoryToDo.cotegories.length,
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                              mainAxisSpacing: 4,
+                              crossAxisSpacing: 4,
+                              crossAxisCount: 3,
+                            ),
+                            itemBuilder: (context, index) {
+                              return categoryItem(
+                                  CotegoryToDo.cotegories[index], index);
+                            }),
                       ),
-                      Row(
-                        children: [
-                          ctegoryWidget(
-                              iconName: MyImages.icon_house,
-                              color: MyColors.C_FFCC80,
-                              cotegory: 'Home'),
-                          SizedBox(width: 32.w),
-                          ctegoryWidget(
-                              iconName: MyImages.icon_health,
-                              color: MyColors.C_80FFA3,
-                              cotegory: 'Health'),
-                          SizedBox(width: 32.w),
-                          ctegoryWidget(
-                              iconName: MyImages.icon_movie,
-                              color: MyColors.C_80D1FF,
-                              cotegory: 'Movie'),
-                        ],
-                      ),
-                      SizedBox(height: 30.h),
-                      ButtonConiformation(
-                          buttonName: 'Add Category', onTap: () {}),
                     ],
                   ),
                 );
@@ -81,39 +77,40 @@ class ButtonMark extends StatelessWidget {
           },
         );
       },
-      child: SvgPicture.asset(MyImages.icon_tag),
+      child: SvgPicture.asset(
+        MyImages.icon_tag,
+        color: widget.color,
+      ),
     );
   }
 
-  Widget ctegoryWidget({
-    required Color color,
-    required String iconName,
-    required String cotegory,
-  }) {
-    return Column(
-      children: [
-        SizedBox(height: 15.h),
-        Row(
-          children: [
-            Container(
-              width: 64.w,
-              height: 64.h,
-              color: color,
-              child: Padding(
-                padding: const EdgeInsets.all(14).r,
-                child: SvgPicture.asset(iconName),
+  Widget categoryItem(CotegoryToDo category, int index) {
+    return InkWell(
+      onTap: () {
+        widget.onSelected(index);
+        Navigator.pop(context);
+      },
+      child: Column(
+        children: [
+          Container(
+            height: 64,
+            width: 64,
+            color: category.color,
+            child: Center(
+              child: SvgPicture.asset(category.iconName),
+            ),
+          ),
+          SizedBox(height: 4.h),
+          Expanded(
+            child: Text(
+              category.cotegoryNAme.tr(),
+              style: FontLatoW400(
+                color: isDark ? MyColors.C_FFFFFF : Colors.black,
               ),
             ),
-          ],
-        ),
-        SizedBox(height: 5.h),
-        Text(
-          cotegory,
-          style: FontLatoW400(color: MyColors.C_FFFFFF).copyWith(
-            fontSize: 14.sp,
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

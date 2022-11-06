@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:note/utils/app_routes.dart';
 import 'package:note/utils/colors.dart';
 import 'package:note/utils/images.dart';
+import 'package:note/widgets/text_style_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'onboarding_page.dart';
@@ -41,18 +42,30 @@ class _SplashPageState extends State<SplashPage> {
     );
   }
 
+  bool isDark = false;
   @override
   Widget build(BuildContext context) {
+    isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       body: Container(
-        color: MyColors.C_121212,
+        color: Theme.of(context).scaffoldBackgroundColor,
         width: double.infinity,
         height: double.infinity,
         child: Center(
           child: SizedBox(
-            width: 140.w,
+            width: 160.w,
             height: 180.h,
-            child: SvgPicture.asset(MyImages.icon_logo),
+            child: Column(
+              children: [
+                SvgPicture.asset(MyImages.icon_logo),
+                Text(
+                  'UpTodo',
+                  style: FontLatoW700().copyWith(
+                      fontSize: 40.sp,
+                      color: isDark ? MyColors.C_AFAFAF : MyColors.C_121212),
+                )
+              ],
+            ),
           ),
         ),
       ),

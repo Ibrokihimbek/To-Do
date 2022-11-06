@@ -5,33 +5,49 @@ import 'package:note/widgets/text_style_widget.dart';
 
 import '../utils/colors.dart';
 
-Widget TextFieldName({required String hinttext}) {
+Widget TextFieldName({
+  required String hinttext,
+  required textControler,
+  required Color styleColor,
+  required Color filColor,
+  required Color focuseColor,
+  required Color enabledColor,
+  required Color hintColor,
+}) {
   return TextFormField(
-    style: const TextStyle(color: MyColors.C_FFFFFF),
+    style: TextStyle(color: styleColor),
+    controller: textControler,
     validator: (value) {
       if (value == null || value.isEmpty) return 'Please enter your password';
     },
     textInputAction: TextInputAction.next,
     keyboardType: TextInputType.visiblePassword,
     decoration: InputDecoration(
-      fillColor: MyColors.C_1D1D1D,
+      fillColor: filColor,
       filled: true,
-      focusedBorder: const OutlineInputBorder(
-        borderSide: BorderSide(color: MyColors.C_979797, width: 0.8),
+      focusedBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: focuseColor, width: 0.8.w),
       ),
-      enabledBorder: const OutlineInputBorder(
-        borderSide: BorderSide(color: MyColors.C_979797, width: 0.8),
+      enabledBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: enabledColor, width: 0.8.w),
       ),
       border: const OutlineInputBorder(),
       hintText: hinttext,
-      hintStyle: FontLatoW400(color: MyColors.C_AFAFAF),
+      hintStyle: FontLatoW400(color: hintColor),
     ),
   );
 }
 
-Widget TextFieldPassword({required String hinttext}) {
+Widget TextFieldPassword({
+  required String hinttext,
+  required Color styleColor,
+  required Color filColor,
+  required Color focuseColor,
+  required Color enabledColor,
+  required Color hintColor,
+}) {
   return TextFormField(
-    style: const TextStyle(color: MyColors.C_FFFFFF),
+    style: TextStyle(color: styleColor),
     validator: (value) {
       if (value == null || value.isEmpty) return 'Please enter your Username';
     },
@@ -39,17 +55,17 @@ Widget TextFieldPassword({required String hinttext}) {
     keyboardType: TextInputType.text,
     obscureText: true,
     decoration: InputDecoration(
-      fillColor: MyColors.C_1D1D1D,
+      fillColor: filColor,
       filled: true,
-      focusedBorder: const OutlineInputBorder(
-        borderSide: BorderSide(color: MyColors.C_979797, width: 0.8),
+      focusedBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: filColor, width: 0.8.w),
       ),
-      enabledBorder: const OutlineInputBorder(
-        borderSide: BorderSide(color: MyColors.C_979797, width: 0.8),
+      enabledBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: enabledColor, width: 0..w),
       ),
       border: const OutlineInputBorder(),
       hintText: hinttext,
-      hintStyle: FontLatoW400(color: MyColors.C_535353),
+      hintStyle: FontLatoW400(color: hintColor),
     ),
   );
 }

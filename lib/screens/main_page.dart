@@ -1,7 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:note/screens/profile_page.dart';
 import 'package:note/utils/colors.dart';
 import 'package:note/utils/images.dart';
 import 'package:note/widgets/add_task_widget.dart';
@@ -21,6 +23,8 @@ class MainPage extends StatefulWidget {
   State<MainPage> createState() => _MainPageState();
 }
 
+bool isDark = false;
+
 class _MainPageState extends State<MainPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   DateTime selectedDate = DateTime.now();
@@ -31,50 +35,19 @@ class _MainPageState extends State<MainPage> {
   List<Widget> _pages = [
     HomePage(),
     Container(),
-    Container(),
+    ProfilePage(),
   ];
 
   @override
   Widget build(BuildContext context) {
+    isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
       key: _scaffoldKey,
-      body: _pages[_selectedIndex],
-      backgroundColor: MyColors.C_121212,
-      appBar: AppBar(
-        toolbarHeight: 80,
-        centerTitle: true,
-        leading: IconButton(
-          onPressed: () {
-            _scaffoldKey.currentState?.openDrawer();
-          },
-          icon: SvgPicture.asset(MyImages.icon_more),
-        ),
-        backgroundColor: MyColors.C_121212,
-        elevation: 0,
-        title: const Text("Index"),
-        actions: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(50),
-            child: const CircleAvatar(
-              radius: 24,
-              backgroundImage: AssetImage(MyImages.image_person),
-            ),
-          ),
-          SizedBox(width: 12.w),
-        ],
+      body: SafeArea(
+        child: _pages[_selectedIndex],
       ),
-      drawer: Drawer(
-        backgroundColor: MyColors.C_363636,
-        child: InkWell(
-          onTap: () {
-            saveLogin(context);
-          },
-          child: const Icon(
-            Icons.logout,
-            color: Colors.white,
-          ),
-        ),
-      ),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       bottomNavigationBar: SizedBox(
         height: 86.h,
         child: BottomNavigationBar(
@@ -101,39 +74,34 @@ class _MainPageState extends State<MainPage> {
                     },
                   );
                 }
-                if (_selectedIndex == 2) {
-                  showDatePicker(
-                    confirmText: 'Choose Time',
-                    cancelText: 'Cancel',
-                    context: context,
-                    initialDate: selectedDate,
-                    firstDate: DateTime(2015),
-                    lastDate: DateTime(2101),
-                  );
-                }
               },
             );
           },
           iconSize: 28,
-          selectedItemColor: Colors.white,
-          unselectedItemColor: Colors.white.withOpacity(0.50),
-          backgroundColor: MyColors.C_363636,
+          selectedItemColor: isDark ? Colors.white : Colors.black,
+          unselectedItemColor: isDark
+              ? Colors.white.withOpacity(0.50)
+              : Colors.black.withOpacity(0.50),
+          backgroundColor: isDark ? MyColors.C_363636 : Colors.grey.shade400,
           type: BottomNavigationBarType.fixed,
           items: [
             BottomNavigationBarItem(
-              icon: SvgPicture.asset(MyImages.icon_home),
-              label: 'Index',
+              icon: SvgPicture.asset(
+                MyImages.icon_home,
+                color: isDark ? Colors.white : Colors.black87,
+              ),
+              label: 'Index'.tr(),
+            ),
+            BottomNavigationBarItem(
+              icon: addButton(),
+              label: 'Add'.tr(),
             ),
             BottomNavigationBarItem(
               icon: SvgPicture.asset(
-                MyImages.icon_add,
-                width: 54,
+                MyImages.icon_profile,
+                color: isDark ? Colors.white : Colors.black87,
               ),
-              label: 'Add',
-            ),
-            BottomNavigationBarItem(
-              icon: SvgPicture.asset(MyImages.icon_calendar),
-              label: 'Calendar',
+              label: 'Profile'.tr(),
             ),
           ],
         ),
@@ -141,10 +109,24 @@ class _MainPageState extends State<MainPage> {
     );
   }
 
-  void saveLogin(context) async {
-    SharedPreferences _pref = await SharedPreferences.getInstance();
-    _pref.setBool("isLoggedIn", false);
-
-    Navigator.pushReplacementNamed(context, RoutName.onBoarding);
+  Container addButton() {
+    return Container(
+      decoration: const BoxDecoration(
+        shape: BoxShape.circle,
+        color: MyColors.C_8687E7,
+      ),
+      width: 54.w,
+      height: 54.h,
+      child: Center(
+        child: Text(
+          '+',
+          style: TextStyle(
+            fontWeight: FontWeight.w300,
+            fontSize: 28.sp,
+            color: isDark ? Colors.white : Colors.black87,
+          ),
+        ),
+      ),
+    );
   }
 }

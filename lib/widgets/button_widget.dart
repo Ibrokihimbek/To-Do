@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -8,6 +9,7 @@ import 'package:note/widgets/text_style_widget.dart';
 import '../utils/images.dart';
 
 Widget ButtonContinueAccount({
+  required Color textColor,
   required String buttonText,
   required String icon,
   required VoidCallback onTap,
@@ -28,7 +30,7 @@ Widget ButtonContinueAccount({
           SizedBox(width: 10.w),
           Text(
             buttonText,
-            style: FontLatoW400(color: MyColors.C_FFFFFF.withOpacity(0.87)),
+            style: FontLatoW400(color: textColor),
           ),
         ],
       ),
@@ -37,6 +39,7 @@ Widget ButtonContinueAccount({
 }
 
 Widget ButtonBack({
+  required Color color,
   required BuildContext context,
   required VoidCallback onTap,
 }) {
@@ -47,6 +50,7 @@ Widget ButtonBack({
       child: SizedBox(
         child: SvgPicture.asset(
           MyImages.icon_back,
+          color: color,
           width: 24.w,
           height: 24.h,
         ),
@@ -55,10 +59,10 @@ Widget ButtonBack({
   );
 }
 
-Widget ButtonLoginOrCreate({
-  required String buttonName,
-  required VoidCallback onTap,
-}) {
+Widget buttonColoredAndColorless(
+    {required String buttonName,
+    required VoidCallback onTap,
+    required Color color}) {
   return Center(
     child: InkWell(
       onTap: onTap,
@@ -68,21 +72,24 @@ Widget ButtonLoginOrCreate({
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(4.r),
           border: Border.all(color: MyColors.C_8875FF, width: 1),
-          color: buttonName == 'LOGIN' ? MyColors.C_8875FF : null,
+          color: buttonName == 'LOGIN' ||
+                  buttonName == 'KIRISH' ||
+                  buttonName == 'АВТОРИЗОВАТЬСЯ'
+              ? MyColors.C_8875FF
+              : null,
         ),
         child: Center(
-          child:
-              Text(buttonName, style: FontLatoW400(color: MyColors.C_FFFFFF)),
+          child: Text(buttonName, style: FontLatoW400(color: color)),
         ),
       ),
     ),
   );
 }
 
-Widget ButtonConiformation({
-  required String buttonName,
-  required VoidCallback onTap,
-}) {
+Widget ButtonConiformation(
+    {required String buttonName,
+    required VoidCallback onTap,
+    required Color color}) {
   return Center(
     child: InkWell(
       onTap: onTap,
@@ -96,7 +103,7 @@ Widget ButtonConiformation({
         child: Center(
           child: Text(
             buttonName,
-            style: FontLatoW400(color: MyColors.C_FFFFFF),
+            style: FontLatoW400(color: color),
           ),
         ),
       ),
@@ -112,7 +119,7 @@ Widget ButtonUsePassword({required VoidCallback onPressed}) {
     ),
     onPressed: onPressed,
     child: Text(
-      "Use Password",
+      "Use Password".tr(),
       style: FontLatoW400(color: MyColors.C_FFFFFF),
     ),
   );
@@ -126,7 +133,7 @@ Widget ButtonCancel({required VoidCallback onTap}) {
       height: 20.h,
       child: Center(
         child: Text(
-          "Cancel",
+          "Cancel".tr(),
           style: FontLatoW400(color: MyColors.C_8875FF),
         ),
       ),

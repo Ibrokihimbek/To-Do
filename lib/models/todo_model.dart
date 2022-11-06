@@ -3,6 +3,7 @@ class TodoFields {
   static String title = "title";
   static String description = "description";
   static String date = "date";
+  static String categoryId = "categoryId";
   static String priority = "priority";
   static String isCompleted = "isCompleted";
 }
@@ -12,7 +13,8 @@ class TodoModel {
   final String title;
   final String description;
   final String date;
-  final String priority;
+  final int categoryId;
+  final int priority;
   final int isCompleted;
   bool isTitleExpanded = false;
 
@@ -21,6 +23,7 @@ class TodoModel {
     required this.title,
     required this.description,
     required this.date,
+    required this.categoryId,
     required this.priority,
     required this.isCompleted,
   });
@@ -31,7 +34,8 @@ class TodoModel {
       title: json['title'] ?? '',
       description: json['description'] ?? '',
       date: json['date'] ?? '',
-      priority: json['priority'] ?? '',
+      categoryId: json['categoryId'] ?? -1,
+      priority: json['priority'] ?? -1,
       isCompleted: json['isCompleted'] ?? -1,
     );
   }
@@ -41,6 +45,7 @@ class TodoModel {
       'title': title,
       'description': description,
       'date': date,
+      'categoryId': categoryId,
       'priority': priority,
       'isCompleted': isCompleted,
     };
@@ -51,7 +56,8 @@ class TodoModel {
     String? title,
     String? description,
     String? date,
-    String? priority,
+    int? categoryId,
+    int? priority,
     int? isCompleted,
   }) =>
       TodoModel(
@@ -59,6 +65,7 @@ class TodoModel {
         title: title ?? this.title,
         description: description ?? this.description,
         date: date ?? this.date,
+        categoryId: categoryId ?? this.categoryId,
         priority: priority ?? this.priority,
         isCompleted: isCompleted ?? this.isCompleted,
       );

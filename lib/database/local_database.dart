@@ -37,7 +37,8 @@ class LocalDatabase {
             ${TodoFields.title} $textType, 
             ${TodoFields.description} $textType, 
             ${TodoFields.date} $textType,
-            ${TodoFields.priority} $textType,
+            ${TodoFields.categoryId} $intType,
+            ${TodoFields.priority} $intType,
             ${TodoFields.isCompleted} $boolType
             )
             ''');
@@ -60,6 +61,7 @@ class LocalDatabase {
       where: 'id = ?',
       whereArgs: [updatedTask.id],
     );
+    print("HAMMASI YAXSHI");
     return updatedTask.copyWith(id: id);
   }
 
@@ -69,6 +71,7 @@ class LocalDatabase {
       TodoFields.id,
       TodoFields.title,
       TodoFields.description,
+      TodoFields.categoryId,
       TodoFields.date
     ]);
 
@@ -93,7 +96,10 @@ class LocalDatabase {
         TodoFields.id,
         TodoFields.title,
         TodoFields.description,
-        TodoFields.date
+        TodoFields.date,
+        TodoFields.priority,
+        TodoFields.categoryId,
+        TodoFields.isCompleted
       ]);
 
       var list = listOfTodos.map((e) => TodoModel.fromJson(e)).toList();

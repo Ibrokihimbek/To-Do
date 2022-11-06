@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../utils/colors.dart';
 
-Widget PostIndicatorWidget({required int currentIndex}) {
+Widget PostIndicatorWidget({required int currentIndex, required Color color}) {
   return Container(
     margin: const EdgeInsets.only(right: 24),
     height: 4.h,
@@ -19,7 +19,7 @@ Widget PostIndicatorWidget({required int currentIndex}) {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(56.r),
             color: currentIndex == index
-                ? MyColors.C_FFFFFF.withOpacity(0.87)
+                ? color
                 : MyColors.C_AFAFAF,
           ),
         );

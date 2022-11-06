@@ -19,3 +19,10 @@ TextStyle FontLatoW400({required Color color}) {
         TextStyle(fontWeight: FontWeight.w400, fontSize: 16.sp, color: color),
   );
 }
+
+TextStyle FontLatoW500({required Color color}) {
+  return GoogleFonts.lato(
+    textStyle:
+        TextStyle(fontWeight: FontWeight.w500, fontSize: 16.sp, color: color),
+  );
+}

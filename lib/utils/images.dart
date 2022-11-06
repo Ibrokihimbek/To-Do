@@ -24,6 +24,18 @@ class MyImages {
   static const icon_movie = 'assets/icons/icon_movie.svg';
   static const icon_sport = 'assets/icons/icon_sport.svg';
   static const icon_universty = 'assets/icons/icon_universty.svg';
+  static const icon_camera = 'assets/icons/icon_camera.svg';
+  static const icon_flash = 'assets/icons/icon_flash.svg';
+  static const icon_info = 'assets/icons/icon_info.svg';
+  static const icon_key = 'assets/icons/icon_key.svg';
+  static const icon_like = 'assets/icons/icon_like.svg';
+  static const icon_logOut = 'assets/icons/icon_log_out.svg';
+  static const icon_menu = 'assets/icons/icon_menu.svg';
+  static const icon_settings = 'assets/icons/icon_settings.svg';
+  static const icon_arroeLeft = 'assets/icons/icon_arrow_left.svg';
+  static const icon_edit = 'assets/icons/icon_edit.svg';
+  static const icon_close = 'assets/icons/icon_close.svg';
+  static const icon_delete = 'assets/icons/icon_delete.svg';
 
 
 
@@ -32,8 +44,5 @@ class MyImages {
   static const image_onboarding_1 = 'assets/images/image_onboarding_1.png';
   static const image_onboarding_2 = 'assets/images/image_onboarding_2.png';
   static const image_onboarding_3 = 'assets/images/image_onboarding_3.png';
-
-  // JPG
-
-  static const image_person = 'assets/images/image_person.jpg';
+  static const image_profile = 'assets/images/image_profile.png';
 }

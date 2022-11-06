@@ -9,7 +9,6 @@ class StorageRepository {
       var newStorage = StorageRepository._();
       await newStorage._init();
       _storage = newStorage;
-      print("NEW INSTANCE");
     }
     return _storage!;
   }

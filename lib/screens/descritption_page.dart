@@ -14,11 +14,15 @@ class DescriptionPage extends StatefulWidget {
   State<DescriptionPage> createState() => _DescriptionPageState();
 }
 
+bool isDark = false;
+
 class _DescriptionPageState extends State<DescriptionPage> {
   @override
   Widget build(BuildContext context) {
+    isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
-      backgroundColor: MyColors.C_121212,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
           child: SizedBox(
         child: Padding(
@@ -29,12 +33,21 @@ class _DescriptionPageState extends State<DescriptionPage> {
               SizedBox(height: 18.h),
               Text(
                 widget.model?.title.toString() ?? "No title",
-                style: FontLatoW700().copyWith(fontSize: 24.sp),
+                style: FontLatoW700().copyWith(
+                  fontSize: 24.sp,
+                  color: isDark
+                      ? MyColors.C_FFFFFF.withOpacity(0.87)
+                      : MyColors.C_121212.withOpacity(0.87),
+                ),
               ),
               SizedBox(height: 32.h),
               Text(
                 widget.model?.description.toString() ?? "No title",
-                style: FontLatoW400(color: MyColors.C_FFFFFF),
+                style: FontLatoW400(
+                  color: isDark
+                      ? MyColors.C_FFFFFF.withOpacity(0.87)
+                      : MyColors.C_121212.withOpacity(0.87),
+                ),
               ),
             ],
           ),
