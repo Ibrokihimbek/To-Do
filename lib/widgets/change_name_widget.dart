@@ -2,20 +2,18 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:note/widgets/button_widget.dart';
+import 'package:note/widgets/settings_widget.dart';
 import 'package:note/widgets/text_style_widget.dart';
 
-import '../local_data/storage_repository.dart';
 import '../utils/colors.dart';
 
 class ChangeNameWidget extends StatefulWidget {
-  VoidCallback newName;
+  ValueChanged<TextEditingController> newName;
   ChangeNameWidget({super.key, required this.newName});
 
   @override
   State<ChangeNameWidget> createState() => _ChangeNameWidgetState();
 }
-
-bool isDark = false;
 
 class _ChangeNameWidgetState extends State<ChangeNameWidget> {
   final formKey = GlobalKey<FormState>();
@@ -23,8 +21,6 @@ class _ChangeNameWidgetState extends State<ChangeNameWidget> {
 
   @override
   Widget build(BuildContext context) {
-    isDark = Theme.of(context).brightness == Brightness.dark;
-
     return Padding(
       padding:
           EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
@@ -85,8 +81,7 @@ class _ChangeNameWidgetState extends State<ChangeNameWidget> {
                 color: isDark ? MyColors.C_FFFFFF : Colors.black,
                 buttonName: 'Edit'.tr(),
                 onTap: () {
-                  StorageRepository.setString('name', cantrollerEditName.text);
-                  widget.newName;
+                  widget.newName(cantrollerEditName);
                   Navigator.pop(context);
                 },
               ),

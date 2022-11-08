@@ -107,6 +107,37 @@ class LocalDatabase {
     }
   }
 
+  static Future<List<TodoModel>> getTodosIsCompleted(int isCompleted,
+      {String title = ''}) async {
+    var database = await getInstance.getDb();
+
+    if (title.isNotEmpty) {
+      var listOfTodos = await database.query(
+        tableName,
+        where: 'title LIKE ? AND ${TodoFields.isCompleted} = ?',
+        whereArgs: ['%$title%', '$isCompleted'],
+      );
+      var list = listOfTodos.map((e) => TodoModel.fromJson(e)).toList();
+      return list;
+    } else {
+      var listOfTodos = await database.query(tableName,
+          columns: [
+            TodoFields.id,
+            TodoFields.title,
+            TodoFields.description,
+            TodoFields.date,
+            TodoFields.priority,
+            TodoFields.categoryId,
+            TodoFields.isCompleted
+          ],
+          where: '${TodoFields.isCompleted} = ?',
+          whereArgs: ['$isCompleted']);
+
+      var list = listOfTodos.map((e) => TodoModel.fromJson(e)).toList();
+      return list;
+    }
+  }
+
   static Future<int> deleteTaskById(int id) async {
     var database = await getInstance.getDb();
     return await database.delete(

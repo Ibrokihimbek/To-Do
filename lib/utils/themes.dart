@@ -1,26 +1,25 @@
 import 'package:flutter/material.dart';
-import 'colors.dart';
 
-class MyThemes {
-  static final themeLight = ThemeData(
-    scaffoldBackgroundColor: MyColors.C_FEFEFF,
-    appBarTheme: const AppBarTheme(color: Colors.blue),
-    primarySwatch: Colors.blue,
-    brightness: Brightness.light,
-    textTheme: const TextTheme(
-      headline1: TextStyle(color: Colors.black),
-    ),
-  );
-
-  static final themeDark = ThemeData(
-    brightness: Brightness.dark,
-    appBarTheme: const AppBarTheme(
-      backgroundColor: MyColors.C_121212,
-    ),
-    backgroundColor: MyColors.C_121212,
-    scaffoldBackgroundColor: Colors.black,
-    textTheme: const TextTheme(
-      headline1: TextStyle(color: Colors.white),
-    ),
-  );
+class Styles {
+  static ThemeData themeData(bool isDarkTheme, BuildContext context) {
+    return ThemeData(
+      primarySwatch: Colors.indigo,
+      primaryColor: isDarkTheme ? Colors.black : Colors.white,
+      backgroundColor: isDarkTheme ? Color(0xffF1F5FB) : Colors.black,
+      indicatorColor: isDarkTheme ? Color(0xff0E1D36) : Color(0xffCBDCF8),
+      hintColor: isDarkTheme ? Color(0xff280C0B) : Color(0xffEECED3),
+      highlightColor: isDarkTheme ? Colors.transparent : Colors.transparent,
+      hoverColor: isDarkTheme ? Color(0xff3A3A3B) : Color(0xff4285F4),
+      focusColor: isDarkTheme ? Color(0xff0B2512) : Color(0xffA8DAB5),
+      disabledColor: Colors.grey,
+      cardColor: isDarkTheme ? Color(0xFF151515) : Colors.white,
+      canvasColor: isDarkTheme ? Colors.black : Colors.grey[50],
+      brightness: isDarkTheme ? Brightness.dark : Brightness.light,
+      buttonTheme: Theme.of(context).buttonTheme.copyWith(
+          colorScheme: isDarkTheme ? ColorScheme.dark() : ColorScheme.light()),
+      appBarTheme: const AppBarTheme(
+        elevation: 0.0,
+      ),
+    );
+  }
 }

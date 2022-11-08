@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:note/models/todo_model.dart';
 import 'package:note/utils/colors.dart';
+import 'package:note/widgets/settings_widget.dart';
 import 'package:note/widgets/text_style_widget.dart';
+
 
 class DescriptionPage extends StatefulWidget {
   TodoModel? model;
@@ -14,13 +14,9 @@ class DescriptionPage extends StatefulWidget {
   State<DescriptionPage> createState() => _DescriptionPageState();
 }
 
-bool isDark = false;
-
 class _DescriptionPageState extends State<DescriptionPage> {
   @override
   Widget build(BuildContext context) {
-    isDark = Theme.of(context).brightness == Brightness.dark;
-
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(

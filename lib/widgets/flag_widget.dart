@@ -1,15 +1,13 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:note/utils/colors.dart';
 import 'package:note/utils/images.dart';
-import 'package:note/widgets/button_widget.dart';
-import 'package:note/widgets/text_style_widget.dart';
 
-import '../models/cotegory_model.dart';
+import 'package:note/widgets/settings_widget.dart';
+import 'package:note/widgets/text_style_widget.dart';
 
 class ButtonFlag extends StatefulWidget {
   ValueChanged<int> onSelected;
@@ -20,14 +18,10 @@ class ButtonFlag extends StatefulWidget {
   State<ButtonFlag> createState() => _ButtonFlagState();
 }
 
-bool isDark = false;
-
 class _ButtonFlagState extends State<ButtonFlag> {
   int value = 0;
   @override
   Widget build(BuildContext context) {
-    isDark = Theme.of(context).brightness == Brightness.dark;
-
     return InkWell(
       onTap: () {
         showDialog(

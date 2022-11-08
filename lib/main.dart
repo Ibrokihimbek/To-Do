@@ -4,8 +4,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:note/screens/splash_page.dart';
 import 'package:note/utils/app_routes.dart';
 import 'package:note/utils/themes.dart';
+import 'package:provider/provider.dart';
 
 import 'local_data/storage_repository.dart';
+import 'local_data/theme_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,7 +23,11 @@ void main() async {
         Locale('ru', 'RU'),
       ],
       path: 'assets/translations',
-      child: const MyApp(),
+      child: MultiProvider(providers: [
+        ChangeNotifierProvider(
+          create: (_) => ThemeProvider(),
+        ),
+      ], child: const MyApp()),
     ),
   );
 }
@@ -31,24 +37,27 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isDark = false;
+    bool isDark = true;
     return ScreenUtilInit(
       designSize: const Size(375, 812),
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (BuildContext context, Widget? child) {
         return MaterialApp(
-            localizationsDelegates: context.localizationDelegates,
-            supportedLocales: context.supportedLocales,
-            locale: context.locale,
-            initialRoute: RoutName.splash,
-            onGenerateRoute: AppRoutes.generateRoute,
-            debugShowCheckedModeBanner: false,
-            title: 'Note',
-            themeMode: ThemeMode.dark,
-            darkTheme: isDark ? MyThemes.themeLight : MyThemes.themeDark,
-            theme: MyThemes.themeLight,
-            home: child);
+          localizationsDelegates: context.localizationDelegates,
+          supportedLocales: context.supportedLocales,
+          locale: context.locale,
+          initialRoute: RoutName.splash,
+          onGenerateRoute: AppRoutes.generateRoute,
+          debugShowCheckedModeBanner: false,
+          title: 'UpTodo',
+          theme: Styles.themeData(
+              context.watch<ThemeProvider>().getIsLight(), context),
+          themeMode: context.watch<ThemeProvider>().getIsLight()
+              ? ThemeMode.dark
+              : ThemeMode.light,
+          home: child,
+        );
       },
       child: const SplashPage(),
     );

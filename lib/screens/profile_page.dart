@@ -1,9 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:note/local_data/theme_provider.dart';
 import 'package:note/utils/colors.dart';
 import 'package:note/utils/images.dart';
 import 'package:note/widgets/change_name_widget.dart';
@@ -21,13 +20,10 @@ class ProfilePage extends StatefulWidget {
   State<ProfilePage> createState() => _ProfilePageState();
 }
 
-bool isDark = false;
-
 class _ProfilePageState extends State<ProfilePage> {
-  String name = StorageRepository.getStringt('name');
   @override
   Widget build(BuildContext context) {
-    isDark = Theme.of(context).brightness == Brightness.dark;
+    String name = StorageRepository.getStringt('name');
 
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -78,6 +74,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       borderRadius: BorderRadius.circular(4.r),
                       color: isDark ? MyColors.C_363636 : Colors.grey.shade400,
                     ),
+                    // child: Text('${}'),
                   ),
                   SizedBox(width: 10.w),
                   Container(
@@ -118,7 +115,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     context: context,
                     builder: (BuildContext context) {
                       return ChangeNameWidget(
-                        newName: () {
+                        newName: (controller) {
+                          StorageRepository.setString('name', controller.text);
                           setState(() {});
                         },
                       );

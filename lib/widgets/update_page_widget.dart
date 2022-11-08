@@ -6,6 +6,7 @@ import 'package:note/models/todo_model.dart';
 import 'package:note/utils/colors.dart';
 import 'package:note/utils/images.dart';
 import 'package:note/widgets/button_widget.dart';
+import 'package:note/widgets/settings_widget.dart';
 import 'package:note/widgets/text_style_widget.dart';
 
 import '../database/local_database.dart';
@@ -22,15 +23,11 @@ class UpdateWidget extends StatefulWidget {
   State<UpdateWidget> createState() => _UpdateWidgetState();
 }
 
-bool isDark = false;
-
 class _UpdateWidgetState extends State<UpdateWidget> {
   @override
   Widget build(BuildContext context) {
-    isDark = Theme.of(context).brightness == Brightness.dark;
-
     return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      backgroundColor: isDark ? MyColors.C_121212 : MyColors.C_FFFFFF,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24).r,
@@ -100,7 +97,7 @@ class _UpdateWidgetState extends State<UpdateWidget> {
                       },
                       child: Text(
                         !widget.todo!.isTitleExpanded
-                            ? (widget.todo!.description.length > 30
+                            ? (widget.todo!.description.length > 20
                                 ? "... more".tr()
                                 : "")
                             : "\nshow less".tr(),

@@ -1,13 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:note/utils/app_routes.dart';
 import 'package:note/utils/colors.dart';
 import 'package:note/widgets/button_widget.dart';
+import 'package:note/widgets/settings_widget.dart';
 
 import '../local_data/storage_repository.dart';
 import '../utils/images.dart';
@@ -22,17 +20,13 @@ class RegisterPage extends StatefulWidget {
   State<RegisterPage> createState() => _RegisterPageState();
 }
 
-bool isDark = false;
-
 class _RegisterPageState extends State<RegisterPage> {
   final _formKey = GlobalKey<FormState>();
   final myControllerRegister = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    isDark = Theme.of(context).brightness == Brightness.dark;
-
     return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      backgroundColor: isDark ? MyColors.C_121212 : MyColors.C_FFFFFF,
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         child: Form(
@@ -157,7 +151,8 @@ class _RegisterPageState extends State<RegisterPage> {
                                   ),
                                   SizedBox(height: 12.h),
                                   Text(
-                                    "Please hold your finger at the fingerprint scanner to verify your identity".tr(),
+                                    "Please hold your finger at the fingerprint scanner to verify your identity"
+                                        .tr(),
                                     textAlign: TextAlign.center,
                                     style: FontLatoW400(
                                       color: isDark

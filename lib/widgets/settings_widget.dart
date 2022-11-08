@@ -1,8 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:note/local_data/storage_repository.dart';
 import 'package:note/widgets/text_style_widget.dart';
+import 'package:provider/provider.dart';
 
+import '../local_data/theme_provider.dart';
 import '../utils/colors.dart';
 import '../utils/themes.dart';
 
@@ -14,12 +17,12 @@ class SettingsWidget extends StatefulWidget {
 }
 
 int selectedLang = 1;
-bool isDark = false;
+bool isDark = StorageRepository.getBool("isLight");
 
 class _SettingsWidgetState extends State<SettingsWidget> {
   @override
   Widget build(BuildContext context) {
-    isDark = Theme.of(context).brightness == Brightness.dark;
+    var themeChanger = Provider.of<ThemeProvider>(context);
     switch (context.locale.languageCode) {
       case 'uz':
         selectedLang = 1;
@@ -63,6 +66,15 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                   style:
                       FontLatoW500(color: isDark ? Colors.white : Colors.black),
                 ),
+                Switch(
+                  value: isDark,
+                  onChanged: (val) {
+                    setState(() {
+                      isDark = !isDark;
+                    });
+                    themeChanger.setIsLight(isDark);
+                  },
+                )
               ],
             ),
           ),
@@ -89,7 +101,9 @@ class _SettingsWidgetState extends State<SettingsWidget> {
               setState(
                 () {
                   selectedLang = value as int;
-                  context.setLocale(const Locale('uz', 'UZ'));
+                  context.setLocale(
+                    const Locale('uz', 'UZ'),
+                  );
                 },
               );
             }),

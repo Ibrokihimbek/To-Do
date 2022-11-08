@@ -1,11 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:note/screens/welcome_page.dart';
 import 'package:note/utils/colors.dart';
 import 'package:note/utils/images.dart';
 import 'package:note/widgets/post_indicator_widget.dart';
+import 'package:note/widgets/settings_widget.dart';
 import 'package:note/widgets/text_style_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -22,14 +21,12 @@ class OnboardinPage extends StatefulWidget {
 int currentIndex = 0;
 PageController pageController = PageController();
 String NextButton = 'Next'.tr();
-bool isDark = false;
 
 class _OnboardinPageState extends State<OnboardinPage> {
   @override
   Widget build(BuildContext context) {
-    isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      backgroundColor: isDark ? MyColors.C_121212 : MyColors.C_FFFFFF,
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

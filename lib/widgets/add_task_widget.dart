@@ -2,9 +2,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:note/models/cotegory_model.dart';
 import 'package:note/widgets/choose_cotegory_widget.dart';
 import 'package:note/widgets/flag_widget.dart';
+import 'package:note/widgets/settings_widget.dart';
 
 import 'package:note/widgets/text_style_widget.dart';
 
@@ -12,7 +12,6 @@ import '../database/local_database.dart';
 import '../models/todo_model.dart';
 import '../utils/colors.dart';
 import '../utils/images.dart';
-import '../utils/time_utils.dart';
 
 class AddTaskWidget extends StatefulWidget {
   VoidCallback onNewTask;
@@ -21,8 +20,6 @@ class AddTaskWidget extends StatefulWidget {
   @override
   State<AddTaskWidget> createState() => _AddTaskWidgetState();
 }
-
-bool isDark = false;
 
 class _AddTaskWidgetState extends State<AddTaskWidget> {
   var addTitleController = TextEditingController();
@@ -38,8 +35,6 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
 
   @override
   Widget build(BuildContext context) {
-    isDark = Theme.of(context).brightness == Brightness.dark;
-
     return Padding(
       padding:
           EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),

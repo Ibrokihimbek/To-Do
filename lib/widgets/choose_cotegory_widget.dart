@@ -1,12 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:note/utils/colors.dart';
 import 'package:note/utils/images.dart';
-import 'package:note/widgets/button_widget.dart';
+
+import 'package:note/widgets/settings_widget.dart';
 import 'package:note/widgets/text_style_widget.dart';
 
 import '../models/cotegory_model.dart';
@@ -20,12 +20,9 @@ class ButtonMark extends StatefulWidget {
   State<ButtonMark> createState() => _ButtonMarkState();
 }
 
-bool isDark = false;
-
 class _ButtonMarkState extends State<ButtonMark> {
   @override
   Widget build(BuildContext context) {
-    isDark = Theme.of(context).brightness == Brightness.dark;
     return InkWell(
       onTap: () {
         showDialog(

@@ -75,5 +75,7 @@
     "Delete Task":"Vazifani o'chirish",
     "Edit Task": "Vazifani tahrirlash",
     "New name": "Yangi nom kiriting",
-    "Edit" : "Tahrirlash"
+    "Edit" : "Tahrirlash",
+    "Uncompleted" : "Bajarilmagan",
+    "Completed":"Bajarildi"
 }

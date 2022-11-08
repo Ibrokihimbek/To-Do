@@ -1,10 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:note/utils/app_routes.dart';
 import 'package:note/utils/colors.dart';
 import 'package:note/utils/images.dart';
+import 'package:note/widgets/settings_widget.dart';
 import 'package:note/widgets/text_style_widget.dart';
 
 import '../database/local_database.dart';
@@ -18,15 +20,14 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-bool isDark = false;
-
 class _HomePageState extends State<HomePage> {
   String search = '';
+  int countOfCompleted = 0;
+  int countOfUncompleted = 0;
   @override
   Widget build(BuildContext context) {
-    isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      backgroundColor: isDark ? MyColors.C_121212 : MyColors.C_FFFFFF,
       appBar: AppBar(
         toolbarHeight: 80,
         centerTitle: true,
@@ -39,7 +40,7 @@ class _HomePageState extends State<HomePage> {
                 : MyColors.C_121212.withOpacity(0.87),
           ),
         ),
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        backgroundColor: isDark ? MyColors.C_121212 : MyColors.C_FFFFFF,
         elevation: 0,
         title: Text(
           "Index".tr(),
@@ -60,119 +61,213 @@ class _HomePageState extends State<HomePage> {
           SizedBox(width: 12.w),
         ],
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: TextField(
-              onChanged: (val) {
-                setState(
-                  () {
-                    search = val;
-                  },
-                );
-              },
-              style: TextStyle(
-                color: isDark ? Colors.white : Colors.black,
-              ),
-              decoration: InputDecoration(
-                hintText: 'Search for your task...'.tr(),
-                hintStyle: FontLatoW400(
-                    color: isDark ? MyColors.C_AFAFAF : Colors.black54),
-                prefixIcon: Container(
-                  padding: const EdgeInsets.all(12).r,
-                  child: SvgPicture.asset(MyImages.icon_search,
+      body: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: TextField(
+                onChanged: (val) {
+                  setState(
+                    () {
+                      search = val;
+                    },
+                  );
+                },
+                style: TextStyle(
+                  color: isDark ? Colors.white : Colors.black,
+                ),
+                decoration: InputDecoration(
+                  hintText: 'Search for your task...'.tr(),
+                  hintStyle: FontLatoW400(
                       color: isDark ? MyColors.C_AFAFAF : Colors.black54),
-                ),
-                filled: true,
-                fillColor: isDark ? MyColors.C_1D1D1D : Colors.grey.shade300,
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: isDark ? Colors.white : Colors.black,
+                  prefixIcon: Container(
+                    padding: const EdgeInsets.all(12).r,
+                    child: SvgPicture.asset(MyImages.icon_search,
+                        color: isDark ? MyColors.C_AFAFAF : Colors.black54),
                   ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: isDark ? Colors.white : Colors.black,
+                  filled: true,
+                  fillColor: isDark ? MyColors.C_1D1D1D : Colors.grey.shade300,
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: isDark ? Colors.white : Colors.black,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: isDark ? Colors.white : Colors.black,
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-          Expanded(
-            child: FutureBuilder(
-              future: LocalDatabase.getTaskByTitle(title: search),
-              builder: (BuildContext context,
-                  AsyncSnapshot<List<TodoModel>> snapshot) {
-                if (snapshot.hasData) {
-                  if (snapshot.data!.isEmpty) {
-                    return Padding(
-                      padding: const EdgeInsets.only(left: 20).r,
-                      child: Column(
-                        children: [
-                          SizedBox(height: 50.h),
-                          SvgPicture.asset(MyImages.icon_checklist),
-                          Text(
-                            'What do you want to do today?'.tr(),
-                            style: FontLatoW400(
-                              color: isDark
-                                  ? MyColors.C_FFFFFF.withOpacity(0.87)
-                                  : MyColors.C_121212.withOpacity(0.87),
-                            ).copyWith(fontSize: 20.sp),
+            unCompletedTodos(),
+            completedTodos(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget unCompletedTodos() {
+    return ExpansionTile(
+      title: Text(
+        'Uncompleted'.tr(),
+        style: FontLatoW400(
+          color: isDark ? MyColors.C_FFFFFF : MyColors.C_121212,
+        ),
+      ),
+      children: [
+        SingleChildScrollView(
+          child: FutureBuilder(
+            future: LocalDatabase.getTodosIsCompleted(0, title: search),
+            builder: (BuildContext context,
+                AsyncSnapshot<List<TodoModel>> snapshot) {
+              if (snapshot.hasData) {
+                if (snapshot.data!.isEmpty) {
+                  return Padding(
+                    padding: const EdgeInsets.only(left: 20).r,
+                    child: Column(
+                      children: [
+                        SizedBox(height: 50.h),
+                        SvgPicture.asset(MyImages.icon_checklist),
+                        Text(
+                          'What do you want to do today?'.tr(),
+                          style: FontLatoW400(
+                            color: isDark
+                                ? MyColors.C_FFFFFF.withOpacity(0.87)
+                                : MyColors.C_121212.withOpacity(0.87),
+                          ).copyWith(fontSize: 20.sp),
+                        ),
+                        SizedBox(height: 10.h),
+                        Text(
+                          textAlign: TextAlign.center,
+                          'Tap + to add your tasks'.tr(),
+                          style: FontLatoW400(
+                            color: isDark
+                                ? MyColors.C_FFFFFF.withOpacity(0.87)
+                                : MyColors.C_121212.withOpacity(0.87),
                           ),
-                          SizedBox(height: 10.h),
-                          Text(
-                            textAlign: TextAlign.center,
-                            'Tap + to add your tasks'.tr(),
-                            style: FontLatoW400(
-                              color: isDark
-                                  ? MyColors.C_FFFFFF.withOpacity(0.87)
-                                  : MyColors.C_121212.withOpacity(0.87),
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  }
-                  return ListView.builder(
-                    itemCount: snapshot.data?.length ?? 0,
-                    itemBuilder: (context, index) {
-                      return TaskItem(
-                        model: snapshot.data?[index],
-                        onDeleted: () {
-                          setState(() {});
-                        },
-                        onSelected: () {
-                          Navigator.pushNamed(
-                            context,
-                            RoutName.updateWidget,
-                            arguments: {
-                              'toDoModel': snapshot.data![index],
-                              'onDeleted': () {
-                                setState(() {});
-                              }
-                            },
-                          );
-                        },
-                      );
-                    },
-                  );
-                } else if (snapshot.hasError) {
-                  return Center(
-                    child: Text(
-                      snapshot.error.toString(),
-                      style: FontLatoW400(
-                        color: isDark ? MyColors.C_FFFFFF : Colors.black,
-                      ),
+                        ),
+                        SizedBox(height: 30.h),
+                      ],
                     ),
                   );
                 }
-                return const Center(child: CircularProgressIndicator());
-              },
-            ),
+                return ListView.builder(
+                  physics: const BouncingScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: snapshot.data!.length,
+                  itemBuilder: (context, index) {
+                    return TaskItem(
+                      onCompleted: (todo) {
+                        setState(() {
+                          LocalDatabase.updateTaskById(
+                            todo.copyWith(isCompleted: 1),
+                          );
+                        });
+                      },
+                      model: snapshot.data?[index],
+                      onDeleted: () {
+                        setState(() {});
+                      },
+                      onSelected: () {
+                        Navigator.pushNamed(
+                          context,
+                          RoutName.updateWidget,
+                          arguments: {
+                            'toDoModel': snapshot.data![index],
+                            'onDeleted': () {
+                              setState(() {});
+                            }
+                          },
+                        );
+                      },
+                    );
+                  },
+                );
+              } else if (snapshot.hasError) {
+                return Center(
+                  child: Text(
+                    snapshot.error.toString(),
+                    style: FontLatoW400(
+                      color: isDark ? MyColors.C_FFFFFF : Colors.black,
+                    ),
+                  ),
+                );
+              }
+              return const Center(child: CircularProgressIndicator());
+            },
           ),
-        ],
+        ),
+      ],
+    );
+  }
+
+  Widget completedTodos() {
+    return ExpansionTile(
+      title: Text(
+        'Completed'.tr(),
+        style: FontLatoW400(
+          color: isDark ? MyColors.C_FFFFFF : MyColors.C_121212,
+        ),
       ),
+      children: [
+        SingleChildScrollView(
+          child: FutureBuilder(
+            future: LocalDatabase.getTodosIsCompleted(1, title: search),
+            builder: (BuildContext context,
+                AsyncSnapshot<List<TodoModel>> snapshot) {
+              if (snapshot.hasData) {
+                if (snapshot.data!.isEmpty) {}
+                return ListView.builder(
+                  physics: const BouncingScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: snapshot.data!.length,
+                  itemBuilder: (context, index) {
+                    return TaskItem(
+                      onCompleted: (todo) {
+                        setState(() {
+                          LocalDatabase.updateTaskById(
+                            todo.copyWith(isCompleted: 0),
+                          );
+                        });
+                      },
+                      model: snapshot.data?[index],
+                      onDeleted: () {
+                        setState(() {});
+                      },
+                      onSelected: () {
+                        Navigator.pushNamed(
+                          context,
+                          RoutName.updateWidget,
+                          arguments: {
+                            'toDoModel': snapshot.data![index],
+                            'onDeleted': () {
+                              setState(() {});
+                            }
+                          },
+                        );
+                      },
+                    );
+                  },
+                );
+              } else if (snapshot.hasError) {
+                return Center(
+                  child: Text(
+                    snapshot.error.toString(),
+                    style: FontLatoW400(
+                      color: isDark ? MyColors.C_FFFFFF : Colors.black,
+                    ),
+                  ),
+                );
+              }
+              return const Center(child: CircularProgressIndicator());
+            },
+          ),
+        ),
+      ],
     );
   }
 }

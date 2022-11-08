@@ -9,9 +9,11 @@ import 'package:note/utils/images.dart';
 import 'package:note/widgets/button_widget.dart';
 import 'package:note/widgets/choose_cotegory_widget.dart';
 import 'package:note/widgets/flag_widget.dart';
+import 'package:note/widgets/settings_widget.dart';
 import 'package:note/widgets/text_style_widget.dart';
 
 import '../database/local_database.dart';
+
 import '../models/todo_model.dart';
 import '../utils/time_utils.dart';
 
@@ -29,8 +31,6 @@ class UpdateTaskWidget extends StatefulWidget {
   State<UpdateTaskWidget> createState() => _UpdateTaskWidgetState();
 }
 
-bool isDark = false;
-
 class _UpdateTaskWidgetState extends State<UpdateTaskWidget> {
   final formKey = GlobalKey<FormState>();
   String newTitle = "";
@@ -41,8 +41,6 @@ class _UpdateTaskWidgetState extends State<UpdateTaskWidget> {
 
   @override
   Widget build(BuildContext context) {
-    isDark = Theme.of(context).brightness == Brightness.dark;
-
     return Padding(
       padding:
           EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
@@ -113,13 +111,6 @@ class _UpdateTaskWidgetState extends State<UpdateTaskWidget> {
                         border: InputBorder.none),
                   ),
                   const SizedBox(height: 12),
-                  Text(
-                    taskDate.toString() == "null"
-                        ? ""
-                        : TimeUtils.formatToMyTime(taskDate!),
-                    style:
-                        TextStyle(color: isDark ? Colors.white : Colors.black),
-                  ),
                   Row(
                     children: [
                       InkWell(

@@ -4,10 +4,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:note/utils/app_routes.dart';
 import 'package:note/utils/colors.dart';
 import 'package:note/utils/images.dart';
+import 'package:note/widgets/settings_widget.dart';
 import 'package:note/widgets/text_style_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import 'onboarding_page.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -42,15 +41,11 @@ class _SplashPageState extends State<SplashPage> {
     );
   }
 
-  bool isDark = false;
   @override
   Widget build(BuildContext context) {
-    isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       body: Container(
-        color: Theme.of(context).scaffoldBackgroundColor,
-        width: double.infinity,
-        height: double.infinity,
+        color: isDark ? MyColors.C_121212 : MyColors.C_FFFFFF,
         child: Center(
           child: SizedBox(
             width: 160.w,
@@ -62,7 +57,7 @@ class _SplashPageState extends State<SplashPage> {
                   'UpTodo',
                   style: FontLatoW700().copyWith(
                       fontSize: 40.sp,
-                      color: isDark ? MyColors.C_AFAFAF : MyColors.C_121212),
+                      color: isDark ? MyColors.C_FFFFFF : MyColors.C_121212),
                 )
               ],
             ),

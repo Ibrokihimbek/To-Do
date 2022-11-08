@@ -1,5 +1,4 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -7,13 +6,9 @@ import 'package:note/screens/profile_page.dart';
 import 'package:note/utils/colors.dart';
 import 'package:note/utils/images.dart';
 import 'package:note/widgets/add_task_widget.dart';
-import 'package:note/widgets/texfield_widget.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:note/widgets/settings_widget.dart';
 
-import '../models/todo_model.dart';
-import '../utils/app_routes.dart';
-import '../widgets/button_widget.dart';
-import '../widgets/text_style_widget.dart';
+
 import 'home_page.dart';
 
 class MainPage extends StatefulWidget {
@@ -22,8 +17,6 @@ class MainPage extends StatefulWidget {
   @override
   State<MainPage> createState() => _MainPageState();
 }
-
-bool isDark = false;
 
 class _MainPageState extends State<MainPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -34,20 +27,18 @@ class _MainPageState extends State<MainPage> {
 
   List<Widget> _pages = [
     HomePage(),
-    Container(),
+    HomePage(),
     ProfilePage(),
   ];
 
   @override
   Widget build(BuildContext context) {
-    isDark = Theme.of(context).brightness == Brightness.dark;
-
     return Scaffold(
       key: _scaffoldKey,
       body: SafeArea(
         child: _pages[_selectedIndex],
       ),
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      backgroundColor: isDark ? MyColors.C_121212 : MyColors.C_FFFFFF,
       bottomNavigationBar: SizedBox(
         height: 86.h,
         child: BottomNavigationBar(
@@ -94,7 +85,7 @@ class _MainPageState extends State<MainPage> {
             ),
             BottomNavigationBarItem(
               icon: addButton(),
-              label: 'Add'.tr(),
+              label: '',
             ),
             BottomNavigationBarItem(
               icon: SvgPicture.asset(
