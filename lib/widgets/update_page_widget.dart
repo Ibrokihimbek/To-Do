@@ -52,13 +52,16 @@ class _UpdateWidgetState extends State<UpdateWidget> {
                         ),
                       ),
                       SizedBox(width: 21.w),
-                      Text(
-                        widget.todo!.title,
-                        style: FontLatoW400(
-                          color: isDark
-                              ? MyColors.C_FFFFFF.withOpacity(0.87)
-                              : MyColors.C_121212.withOpacity(0.87),
-                        ).copyWith(fontSize: 20.sp),
+                      SizedBox(
+                        width: 260.w,
+                        child: Text(
+                          widget.todo!.title,
+                          style: FontLatoW400(
+                            color: isDark
+                                ? MyColors.C_FFFFFF.withOpacity(0.87)
+                                : MyColors.C_121212.withOpacity(0.87),
+                          ).copyWith(fontSize: 20.sp),
+                        ),
                       ),
                     ],
                   ),

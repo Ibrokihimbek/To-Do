@@ -10,6 +10,7 @@ import 'package:note/widgets/settings_widget.dart';
 import 'package:note/widgets/text_style_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../database/local_database.dart';
 import '../local_data/storage_repository.dart';
 import '../utils/app_routes.dart';
 
@@ -21,8 +22,31 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  String search = '';
+  int countOfCompleted = 0;
+  int countOfUncompleted = 0;
+  @override
+  void initState() {
+    taskUnComplated();
+    taskComplatedt();
+  }
+
+  taskUnComplated() async {
+    var list = await LocalDatabase.getTodosIsCompleted(0, title: search);
+    countOfUncompleted = list.length;
+  }
+
+  taskComplatedt() async {
+    var list = await LocalDatabase.getTodosIsCompleted(1, title: search);
+    countOfCompleted = list.length;
+
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
+    
+
     String name = StorageRepository.getStringt('name');
 
     return Scaffold(
@@ -74,7 +98,28 @@ class _ProfilePageState extends State<ProfilePage> {
                       borderRadius: BorderRadius.circular(4.r),
                       color: isDark ? MyColors.C_363636 : Colors.grey.shade400,
                     ),
-                    // child: Text('${}'),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          '${countOfCompleted} ',
+                          style: FontLatoW400(
+                            color: isDark
+                                ? MyColors.C_FFFFFF.withOpacity(0.87)
+                                : MyColors.C_121212.withOpacity(0.87),
+                          ),
+                        ),
+                        Text(
+                          'Completed'.tr(),
+                          style: FontLatoW400(
+                            color: isDark
+                                ? MyColors.C_FFFFFF.withOpacity(0.87)
+                                : MyColors.C_121212.withOpacity(0.87),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                   SizedBox(width: 10.w),
                   Container(
@@ -83,6 +128,28 @@ class _ProfilePageState extends State<ProfilePage> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(4.r),
                       color: isDark ? MyColors.C_363636 : Colors.grey.shade400,
+                    ),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          '${countOfUncompleted} ',
+                          style: FontLatoW400(
+                            color: isDark
+                                ? MyColors.C_FFFFFF.withOpacity(0.87)
+                                : MyColors.C_121212.withOpacity(0.87),
+                          ),
+                        ),
+                        Text(
+                          'Uncompleted'.tr(),
+                          style: FontLatoW400(
+                            color: isDark
+                                ? MyColors.C_FFFFFF.withOpacity(0.87)
+                                : MyColors.C_121212.withOpacity(0.87),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],

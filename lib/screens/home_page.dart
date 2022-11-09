@@ -7,6 +7,7 @@ import 'package:note/utils/app_routes.dart';
 import 'package:note/utils/colors.dart';
 import 'package:note/utils/images.dart';
 import 'package:note/widgets/settings_widget.dart';
+import 'package:note/widgets/task_shimmer_widget.dart';
 import 'package:note/widgets/text_style_widget.dart';
 
 import '../database/local_database.dart';
@@ -22,8 +23,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   String search = '';
-  int countOfCompleted = 0;
-  int countOfUncompleted = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -112,6 +112,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget unCompletedTodos() {
     return ExpansionTile(
+      initiallyExpanded: true,
       title: Text(
         'Uncompleted'.tr(),
         style: FontLatoW400(
@@ -197,7 +198,14 @@ class _HomePageState extends State<HomePage> {
                   ),
                 );
               }
-              return const Center(child: CircularProgressIndicator());
+              return Center(
+                child: Column(
+                  children: [
+                    taskShimmer(),
+                    taskShimmer(),
+                  ],
+                ),
+              );
             },
           ),
         ),
@@ -207,6 +215,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget completedTodos() {
     return ExpansionTile(
+      initiallyExpanded: true,
       title: Text(
         'Completed'.tr(),
         style: FontLatoW400(
@@ -263,7 +272,14 @@ class _HomePageState extends State<HomePage> {
                   ),
                 );
               }
-              return const Center(child: CircularProgressIndicator());
+              return Center(
+                child: Column(
+                  children: [
+                    taskShimmer(),
+                    taskShimmer(),
+                  ],
+                ),
+              );
             },
           ),
         ),

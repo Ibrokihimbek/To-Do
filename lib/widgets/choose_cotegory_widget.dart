@@ -103,7 +103,7 @@ class _ButtonMarkState extends State<ButtonMark> {
               category.cotegoryNAme.tr(),
               style: FontLatoW400(
                 color: isDark ? MyColors.C_FFFFFF : Colors.black,
-              ),
+              ).copyWith(fontSize: 14.sp),
             ),
           ),
         ],

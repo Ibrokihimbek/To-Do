@@ -77,5 +77,8 @@
     "New name": "Yangi nom kiriting",
     "Edit" : "Tahrirlash",
     "Uncompleted" : "Bajarilmagan",
-    "Completed":"Bajarildi"
+    "Completed":"Bajarildi",
+    "Task Priority" : "Vazifa ustuvorligi"
+    
+
 }

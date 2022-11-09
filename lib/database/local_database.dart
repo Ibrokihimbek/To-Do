@@ -134,6 +134,7 @@ class LocalDatabase {
           whereArgs: ['$isCompleted']);
 
       var list = listOfTodos.map((e) => TodoModel.fromJson(e)).toList();
+      await Future.delayed(Duration(milliseconds: 1200));
       return list;
     }
   }
