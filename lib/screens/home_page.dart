@@ -134,6 +134,7 @@ class _HomePageState extends State<HomePage> {
                         SizedBox(height: 50.h),
                         SvgPicture.asset(MyImages.icon_checklist),
                         Text(
+                          textAlign: TextAlign.center,
                           'What do you want to do today?'.tr(),
                           style: FontLatoW400(
                             color: isDark

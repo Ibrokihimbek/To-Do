@@ -104,7 +104,7 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
                 maxLines: 2,
                 validator: (value) {
                   if (value == null || value.isEmpty)
-                    return 'Please enter description';
+                    return 'Please enter description'.tr();
                 },
                 style: TextStyle(
                   color: isDark ? Colors.white : Colors.black87,
